@@ -5,22 +5,21 @@ public class PawnCollision : MonoBehaviour
 {
     private bool hasScored = false;
 
+    //check for collisions
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the pawn has hit the ground
-        if (collision.gameObject.CompareTag("Ground"))
+        //check if the collision is the ground and whether or not it has scored previously
+        if (collision.gameObject.CompareTag("Ground") && !hasScored)
         {
-            // Make sure this pawn hasn't already scored
-            if (!hasScored)
-            {
-                hasScored = true;
+            //set it to having scored already
+            hasScored = true;
 
-                // Award 10 points
-                if (!GameManager.Instance.gameOver)
-                {
-                    GameManager.Instance.AddScore(100);
-                    Debug.Log("Pawn knocked down! +100 points");
-                }
+            //check if the game is over
+            if (!GameManager.Instance.gameOver)
+            {
+                //add score and display message
+                GameManager.Instance.AddScore(100);
+                Debug.Log("Pawn knocked down! +100 points");
             }
         }
     }
