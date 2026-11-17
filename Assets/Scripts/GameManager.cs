@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject LoadedObject;
 
     public bool loaded = true;
+    public float GMPower;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //Displaying loaded message
         if (loaded == false)
         {
             LoadedObject.SetActive(false);
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour
             LoadedObject.SetActive(true);
         }
 
+        //Removing boulders as they are used
         if (BoulderCount == 4)
         {
             Instance.Boulder4.SetActive(false);

@@ -9,7 +9,6 @@ public class CatapultController : MonoBehaviour
 {
     bool boulderfired = false;
     bool fired = false;
-    bool active = true;
     float FrameTime;
     float Power;
     Transform arm;
@@ -17,6 +16,8 @@ public class CatapultController : MonoBehaviour
     Quaternion initialRotation;
     Quaternion targetRotation;
     public GameObject BoulderPhysical;
+    public float ballSpeed = 25f;
+    public float ballAngle = 45f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +27,16 @@ public class CatapultController : MonoBehaviour
         arm = transform.GetChild(3);
         initialRotation = arm.localRotation;
         targetRotation = initialRotation * Quaternion.AngleAxis(86, Vector3.right);
+    }
+
+    //function to spawn the boulders
+    void SpawnBoulder()
+    {
+        GameObject boulder = Instantiate(BoulderPhysical, new Vector3(14.3f, 4.6f, -25.0f), Quaternion.identity);
+
+        BoulderProjectile projectile = boulder.GetComponent<BoulderProjectile>();
+
+        projectile.Initialize(ballSpeed, ballAngle);
     }
 
     // Update is called once per frame
@@ -48,21 +59,22 @@ public class CatapultController : MonoBehaviour
             transform.GetChild(3).Rotate((Vector3.right * Time.deltaTime) * 100);
         }*/
 
-        if (Input.GetKey(KeyCode.Space) && Power < 6 && GameManager.Instance.BoulderCount >=1 && fired == false)
+        if (Input.GetKey(KeyCode.Space) && Power < 3 && GameManager.Instance.BoulderCount >=1 && fired == false)
         {
-            Power += 3.33f * Time.deltaTime;
+            Power += 1f * Time.deltaTime;
+            GameManager.Instance.GMPower = Power;
         }
 
-        if (Power > 2 && !Input.GetKey(KeyCode.Space) && GameManager.Instance.BoulderCount >= 1)
+        if (Power > 0 && !Input.GetKey(KeyCode.Space) && GameManager.Instance.BoulderCount >= 1)
         {
-            fired = true;
             GameManager.Instance.loaded = false;
             t += Time.deltaTime * Power;
             arm.localRotation = Quaternion.Lerp(initialRotation, targetRotation, t);
-            if (arm.rotation.eulerAngles.x >= 80 && !boulderfired)
+            if (arm.rotation.eulerAngles.x >= 85 && !boulderfired)
             {
+                fired = true;
                 boulderfired = true;
-                Instantiate(BoulderPhysical, new Vector3(14.45f, 4.6f, -25.0f), new Quaternion(0f, 0f, 0f, 0f));
+                SpawnBoulder();
             }
         }
 
