@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,20 @@ public class GameManager : MonoBehaviour
 
     public GameObject FinalScoreObject;
 
+    public int BoulderCount = 5;
+
+    public GameObject Boulder4;
+
+    public GameObject Boulder3;
+
+    public GameObject Boulder2;
+
+    public GameObject Boulder1;
+
+    public GameObject LoadedObject;
+
+    public bool loaded = true;
+
     private void Awake()
     {
         Instance = this;
@@ -27,6 +42,35 @@ public class GameManager : MonoBehaviour
         FinalScoreObject.SetActive(false);
         GameEnd.SetActive(false);
         SetScoreText();
+    }
+
+    void Update()
+    {
+        if (loaded == false)
+        {
+            LoadedObject.SetActive(false);
+        }
+        else
+        {             
+            LoadedObject.SetActive(true);
+        }
+
+        if (BoulderCount == 4)
+        {
+            Instance.Boulder4.SetActive(false);
+        }
+        if(BoulderCount == 3)
+        {
+            Instance.Boulder3.SetActive(false);
+        }
+        if(BoulderCount == 2)
+        {
+            Instance.Boulder2.SetActive(false);
+        }
+        if(BoulderCount == 1)
+        {
+            Instance.Boulder1.SetActive(false); 
+        }
     }
 
     void SetScoreText()
